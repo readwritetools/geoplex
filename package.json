@@ -2,20 +2,20 @@
   "name": "geoplex",
   "version": "1.0.1",
   "description": "Nested spherical triangles based on a regular icosahedron model of Earth; a library for use with rwt-orthographic-earth GIS layers",
-  "main": "main.js",
   "author": "Read Write Tools",
   "license": "see license.html",
   "type": "module",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/readwritetools/geoplex.git"
-  },
-  "dependencies": {
-    "iolib": "^1.0.3",
-    "softlib": "^1.0.7"
+  "exports": {
+    ".": "./api/sdk.js",
+    "./*": "./*"
   },
   "bin": {
-    "geoplex": "./geoplex"
+    "geoplex": "./main.mjs"
+  },
+  "dependencies": {
+    "gcsio": "^1.0.9",
+    "iolib": "^1.0.9",
+    "softlib": "^1.0.11"
   },
   "keywords": [
     "GIS",
@@ -23,23 +23,25 @@
     "icosahedron",
     "orthographic earth"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/readwritetools/geoplex.git"
+  },
   "bugs": {
     "url": "https://github.com/readwritetools/geoplex/issues"
   },
   "homepage": "https://hub.readwritetools.com/tasks/geoplex.blue",
   "files": [
+    "api",
+    "gcs",
     "geojson",
     "ice",
     "icosahedron",
     "img",
     "spherical-earth",
-    "api.js",
-    "cli.js",
-    "geoplex",
     "license.blue",
     "license.html",
-    "main.js",
-    "options.js",
+    "main.mjs",
     "readme.md"
   ],
   "com_readwritetools": {

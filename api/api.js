@@ -1,64 +1,65 @@
 /* Copyright (c) 2022 Read Write Tools. */
-import Icosahedron from './icosahedron/icosahedron.js';
+import Icosahedron from '../icosahedron/icosahedron.js';
 
-import GeojsonPoint from './geojson/geojson-point.js';
+import * as Options from '../util/options.js';
 
-import GeojsonLine from './geojson/geojson-line.js';
+import expect from 'softlib/expect.js';
 
-import GeojsonPolygon from './geojson/geojson-polygon.js';
+import terminal from 'softlib/terminal.js';
 
-import GeojsonCollection from './geojson/geojson-collection.js';
+import Pfile from 'iolib/pfile.class.js';
 
-import GeojsonFile from './geojson/geojson-file.js';
+import TextReader from 'iolib/text-reader.class.js';
 
-import * as GeojsonWriter from './geojson/geojson-writer.js';
+import TextWriter from 'iolib/text-writer.class.js';
 
-import * as IceWriter from './ice/ice-writer.js';
+import * as Gcsio from 'gcsio';
 
-import * as Options from './options.js';
-
-import expect from './node_modules/softlib/expect.js';
-
-import terminal from './node_modules/softlib/terminal.js';
-
-import Pfile from './node_modules/iolib/pfile.class.js';
-
-import TextReader from './node_modules/iolib/text-reader.class.js';
-
-import TextWriter from './node_modules/iolib/text-writer.class.js';
+import * as IcoGcsBridge from '../gcs/ico-gcs-bridge.js';
 
 export function uniplexAll(e, o) {
-    expect(e, 'String'), Options.validateUniplexOptions(o);
+    expect(e, 'String'), Options.validateUniplexOptions(o), Options.buildDeclarations(o);
     const t = new Icosahedron(o.maxTerrasect);
-    t.regularAll(), 'geojson' == o.format ? GeojsonWriter.writeAllToGeojson(e, t.vertices, t.edges, t.faces, t.centroids, o) : IceWriter.writeAllToIce(t.indexedCoordinates, e, t.vertices, t.edges, t.faces, t.centroids, o);
+    t.regularAll();
+    var n = new Gcsio.GcsHoldingArea;
+    IcoGcsBridge.convertVertices(t.vertices, n.gcsFeaturePoints, o), IcoGcsBridge.convertEdges(t.edges, n.gcsFeatureLines, o), 
+    IcoGcsBridge.convertFaces(t.faces, n.gcsFeaturePolygons, o), writeUsingGcsio(n, e, o);
 }
 
 export function uniplexVertices(e, o) {
-    expect(e, 'String'), Options.validateUniplexOptions(o);
-    const t = new Icosahedron(o.maxTerrasect), n = t.regularVertices();
-    return 'geojson' == o.format ? GeojsonWriter.writeVerticesToGeojson(e, n, o) : IceWriter.writeVerticesToIce(t.indexedCoordinates, e, n, o), 
-    n;
+    expect(e, 'String'), Options.validateUniplexOptions(o), Options.buildDeclarations(o);
+    const t = new Icosahedron(o.maxTerrasect).regularVertices();
+    var n = new Gcsio.GcsHoldingArea;
+    return IcoGcsBridge.convertVertices(t, n.gcsFeaturePoints, o), writeUsingGcsio(n, e, o), 
+    t;
 }
 
 export function uniplexEdges(e, o) {
-    expect(e, 'String'), Options.validateUniplexOptions(o);
-    const t = new Icosahedron(o.maxTerrasect), n = t.regularEdges();
-    return 'geojson' == o.format ? GeojsonWriter.writeEdgesToGeojson(e, n, o) : IceWriter.writeEdgesToIce(t.indexedCoordinates, e, n, o), 
-    n;
+    expect(e, 'String'), Options.validateUniplexOptions(o), Options.buildDeclarations(o);
+    const t = new Icosahedron(o.maxTerrasect).regularEdges();
+    var n = new Gcsio.GcsHoldingArea;
+    return IcoGcsBridge.convertEdges(t, n.gcsFeatureLines, o), writeUsingGcsio(n, e, o), 
+    t;
 }
 
 export function uniplexFaces(e, o) {
-    expect(e, 'String'), Options.validateUniplexOptions(o);
-    const t = new Icosahedron(o.maxTerrasect), n = t.regularFaces();
-    return 'geojson' == o.format ? GeojsonWriter.writeFacesToGeojson(e, n, o) : IceWriter.writeFacesToIce(t.indexedCoordinates, e, n, o), 
-    n;
+    expect(e, 'String'), Options.validateUniplexOptions(o), Options.buildDeclarations(o);
+    const t = new Icosahedron(o.maxTerrasect).regularFaces();
+    var n = new Gcsio.GcsHoldingArea;
+    return IcoGcsBridge.convertFaces(t, n.gcsFeaturePolygons, o), writeUsingGcsio(n, e, o), 
+    t;
 }
 
 export function uniplexCentroids(e, o) {
-    expect(e, 'String'), Options.validateUniplexOptions(o);
-    const t = new Icosahedron(o.maxTerrasect), n = t.regularCentroids();
-    return 'geojson' == o.format ? GeojsonWriter.writeCentroidsToGeojson(e, n, o) : IceWriter.writeCentroidsToIce(t.indexedCoordinates, e, n, o), 
-    n;
+    expect(e, 'String'), Options.validateUniplexOptions(o), Options.buildDeclarations(o);
+    const t = new Icosahedron(o.maxTerrasect).regularCentroids();
+    var n = new Gcsio.GcsHoldingArea;
+    return IcoGcsBridge.convertCentroids(t, n.gcsFeaturePoints, o), writeUsingGcsio(n, e, o), 
+    t;
+}
+
+function writeUsingGcsio(e, o, t) {
+    [ 'tae', 'taebin' ].includes(t.outputFormat) && (e.gcsFeaturePoints.length > 0 || e.gcsFeatureLines.length > 0) ? terminal.abnormal('tae and taebin output formats are only available for polygons') : [ 'geojson', 'gfe', 'ice', 'tae' ].includes(t.outputFormat) ? Gcsio.writeTextFile(e, o, t) : [ 'gfebin', 'icebin', 'taebin' ].includes(t.outputFormat) ? Gcsio.writeBinaryFile(e, o, t) : terminal.abnormal(`unknown output format ${t.outputFormat}`);
 }
 
 export function printVertexTopology(e, o) {
@@ -113,8 +114,8 @@ export function printEdgeStatistics(e, o) {
             console.log(`${t}: ${o} edges`), r += o, i += e * o;
         }
         console.log(`Count: ${r} edges`);
-        var l = i / r;
-        const o = Math.round(l).toLocaleString() + 'km';
+        var c = i / r;
+        const o = Math.round(c).toLocaleString() + 'km';
         console.log(`Average length: ${o}`);
     }
 }
@@ -132,9 +133,9 @@ export function printFaceStatistics(e, o) {
             console.log(`${t}: ${o} faces`), r += o, i += e * o;
         }
         const o = Math.round(i).toLocaleString() + 'km²';
-        var l = i / r;
-        const c = Math.round(l).toLocaleString() + 'km²';
-        console.log(`Count: ${r} faces`), console.log(`Average area: ${c}`), console.log(`Total area: ${o}`);
+        var c = i / r;
+        const l = Math.round(c).toLocaleString() + 'km²';
+        console.log(`Count: ${r} faces`), console.log(`Average area: ${l}`), console.log(`Total area: ${o}`);
     }
 }
 

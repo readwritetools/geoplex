@@ -11,11 +11,11 @@ import Centroid from './centroid.js';
 
 import IndexedCoordinates from '../ice/indexed-coordinates.js';
 
-import expect from '../node_modules/softlib/expect.js';
+import expect from 'softlib/expect.js';
 
-import terminal from '../node_modules/softlib/terminal.js';
+import terminal from 'softlib/terminal.js';
 
-import aver from '../node_modules/softlib/aver.js';
+import aver from 'softlib/aver.js';
 
 const PI = Math.PI, degreesToRadians = Math.PI / 180, radiansToDegrees = 180 / Math.PI;
 

@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 Read Write Tools. */
 import * as ct from './coordinate-translations.js';
 
-import aver from '../node_modules/softlib/aver.js';
+import aver from 'softlib/aver.js';
 
 const π = Math.PI, degreesToRadians = Math.PI / 180, radiansToDegrees = 180 / Math.PI, EARTH_RADIUS = 6371;
 
