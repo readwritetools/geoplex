@@ -22,7 +22,13 @@ export default class CLI {
     }
     validateOptions() {
         var t = Array.from(process.argv);
-        2 == t.length && this.usageAndExit(''), this.command = t[2];
+        switch (2 == t.length && this.usageAndExit(''), this.command = t[2], this.command) {
+          case '--version':
+            return this.exit(this.showVersion()), !1;
+
+          case '--help':
+            return this.usageAndExit(''), !1;
+        }
         for (let i = t.length - 1; i > 2; i--) {
             var e = t[i];
             switch (e) {
