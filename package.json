@@ -1,6 +1,6 @@
 {
   "name": "geoplex",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Nested spherical triangles based on a regular icosahedron model of Earth; a library for use with rwt-orthographic-earth GIS layers",
   "author": "Read Write Tools",
   "license": "see license.html",
