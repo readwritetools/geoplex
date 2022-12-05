@@ -16,7 +16,7 @@
 	<figcaption></figcaption>
 </figure>
 
-##### JavaScript Orthographic Earth
+##### Thematic Earth
 
 # Geoplex
 
@@ -120,6 +120,7 @@ The generated output is in any of these GIS shape file formats:
 
 This library depends on <a href='https://www.npmjs.com/package/iolib'>iolib</a>
 , <a href='https://www.npmjs.com/package/softlib'>softlib</a>
+, <a href='https://www.npmjs.com/package/gcslib'>gcslib</a>
 , and <a href='https://www.npmjs.com/package/gcsio'>gcsio</a>
 .
 
@@ -153,16 +154,16 @@ This library depends on <a href='https://www.npmjs.com/package/iolib'>iolib</a>
 The <span>geoplex</span> library is not freeware. After evaluating it and
 before using it in a public-facing website, eBook, mobile app, or desktop
 application, you must obtain a license from <a href='https://readwritetools.com/licensing.blue'>Read Write Tools</a>
-as part of the <a href='https://hub.readwritetools.com/components/orthographic-earth.blue'>rwt-orthographic-earth</a>
+as part of the <a href='https://hub.readwritetools.com/components/thematic-earth.blue'>thematic-earth</a>
 DOM Component.
 
 <img src='/img/blue-seal-premium-software.png' width=80 align=right />
 
 <details>
-	<summary>JavaScript Orthographic Earth Software License Agreement</summary>
+	<summary>Thematic Earth Software License Agreement</summary>
 	<p>Copyright © 2022 Read Write Tools.</p>
 	<ol>
-		<li>This Software License Agreement ("Agreement") is a legal contract between you and Read Write Tools ("RWT"). The "Materials" subject to this Agreement include the "JavaScript Orthographic Earth" software and associated documentation.</li>
+		<li>This Software License Agreement ("Agreement") is a legal contract between you and Read Write Tools ("RWT"). The "Materials" subject to this Agreement include the "Thematic Earth" software and associated documentation.</li>
 		<li>By using these Materials, you agree to abide by the terms and conditions of this Agreement.</li>
 		<li>The Materials are protected by United States copyright law, and international treaties on intellectual property rights. The Materials are licensed, not sold to you, and can only be used in accordance with the terms of this Agreement. RWT is and remains the owner of all titles, rights and interests in the Materials, and RWT reserves all rights not specifically granted under this Agreement.</li>
 		<li>Subject to the terms of this Agreement, RWT hereby grants to you a limited, non-exclusive license to use the Materials subject to the following conditions:</li>

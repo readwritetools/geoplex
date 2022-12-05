@@ -13,7 +13,8 @@
     "geoplex": "./main.mjs"
   },
   "dependencies": {
-    "gcsio": "^1.0.9",
+    "gcsio": "^1.0.21",
+    "gcslib": "^1.0.2",
     "iolib": "^1.0.9",
     "softlib": "^1.0.11"
   },
